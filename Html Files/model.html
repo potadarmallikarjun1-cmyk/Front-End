@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flipkart | Full Functionality</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+:root {
+    --fk-blue: #2874f0;
+    --fk-yellow: #ff9f00;
+    --bg-gray: #f1f3f6;
+    --white: #fff;
+    --text-black: #212121;
+    --text-gray: #878787;
+    --green: #388e3c;
+    --fk-orange: #fb641b;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: Roboto, Arial, sans-serif; }
+body { background: var(--bg-gray); color: var(--text-black); overflow-x: hidden; }
+
+/* --- HEADER --- */
+header { background: var(--fk-blue); height: 56px; display: flex; justify-content: center; align-items: center; position: sticky; top: 0; z-index: 2000; }
+.header-inner { width: 90%; max-width: 1248px; display: flex; align-items: center; gap: 20px; }
+.logo-box { cursor: pointer; color: white; display: flex; flex-direction: column; text-decoration: none; }
+.logo-box h1 { font-style: italic; font-size: 20px; line-height: 0.8; }
+.logo-box span { font-size: 11px; font-style: italic; color: var(--fk-yellow); font-weight: bold; }
+
+.search-container { flex: 1; background: white; height: 36px; border-radius: 2px; display: flex; align-items: center; padding: 0 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+.search-container input { border: none; width: 100%; outline: none; font-size: 14px; }
+.search-container i { color: var(--fk-blue); }
+
+.nav-links { display: flex; align-items: center; gap: 30px; color: white; font-weight: 500; }
+.login-btn { background: white; color: var(--fk-blue); border: none; padding: 5px 35px; border-radius: 2px; font-weight: bold; cursor: pointer; }
+
+/* --- CATEGORY BAR --- */
+.cat-navbar { background: white; display: flex; justify-content: center; gap: 30px; padding: 12px 0; border-bottom: 1px solid #dbdbdb; overflow-x: auto; }
+.cat-item { text-align: center; cursor: pointer; min-width: 80px; }
+.cat-item img { width: 64px; height: 64px; }
+.cat-item p { font-size: 14px; font-weight: 500; margin-top: 5px; }
+
+/* --- HERO SLIDER --- */
+.hero-slider { width: 98%; margin: 10px auto; height: 280px; position: relative; overflow: hidden; border-radius: 4px; }
+.slide { width: 100%; height: 100%; position: absolute; opacity: 0; transition: 0.8s ease; }
+.slide.active { opacity: 1; }
+.slide img { width: 100%; height: 100%; object-fit: cover; }
+
+/* --- PRODUCT GRID --- */
+.main-wrapper { width: 98%; margin: 0 auto; }
+.section-white { background: white; margin-bottom: 15px; padding: 20px; }
+.sec-title { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid #f0f0f0; padding-bottom: 10px; }
+.product-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; }
+
+.card { padding: 10px; transition: 0.3s; text-align: center; border: 1px solid transparent; }
+.card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); transform: scale(1.02); }
+.card img { height: 150px; object-fit: contain; margin-bottom: 10px; }
+.card-title { font-size: 14px; height: 36px; overflow: hidden; margin-bottom: 5px; }
+.rating-badge { background: var(--green); color: white; padding: 2px 6px; border-radius: 3px; font-size: 12px; }
+.price-row { font-size: 18px; font-weight: bold; margin: 10px 0; }
+
+/* --- CART SIDEBAR --- */
+#cartSidebar { position: fixed; right: -400px; top: 0; width: 380px; height: 100%; background: white; z-index: 3000; box-shadow: -5px 0 15px rgba(0,0,0,0.2); transition: 0.3s; padding: 20px; display: flex; flex-direction: column; }
+#cartSidebar.active { right: 0; }
+.cart-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 15px; }
+.cart-items-container { flex: 1; overflow-y: auto; margin: 15px 0; }
+.cart-item { display: flex; gap: 10px; padding: 10px 0; border-bottom: 1px dotted #ccc; align-items: center; }
+.cart-item img { width: 50px; height: 50px; object-fit: contain; }
+.checkout-btn { background: var(--fk-orange); color: white; border: none; padding: 15px; width: 100%; font-weight: bold; cursor: pointer; }
+
+footer { background: #172337; color: white; padding: 40px 10%; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px; font-size: 12px; }
+</style>
+</head>
+<body>
+
+<header>
+    <div class="header-inner">
+        <div class="logo-box" onclick="location.reload()">
+            <h1>Flipkart</h1>
+            <span>Explore Plus <img src="https://static-assets-web.flixcart.com/fk-p-linchpin-web/fk-cp-zion/img/plus_aef861.png" width="10"></span>
+        </div>
+        <div class="search-container">
+            <input type="text" id="mainSearch" placeholder="Search for products, brands and more">
+            <i class="fa fa-search"></i>
+        </div>
+        <div class="nav-links">
+            <button class="login-btn" id="loginBtn" onclick="userLogin()">Login</button>
+            <div style="cursor:pointer; position:relative" onclick="toggleCart()">
+                <i class="fa fa-shopping-cart"></i> Cart
+                <span id="cartCount" style="background:#ff6161; border-radius:50%; padding:1px 6px; font-size:10px; position:absolute; top:-12px; right:-10px;">0</span>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- CATEGORY BAR -->
+<div class="cat-navbar" id="catNav">
+    <div class="cat-item" onclick="filterCategory('all')"><img src="https://rukminim1.flixcart.com/flap/128/128/image/29327f40e9c4d26b.png"><p>All</p></div>
+    <div class="cat-item" onclick="filterCategory('electronics')"><img src="https://rukminim1.flixcart.com/flap/128/128/image/69cff05093e66e28.png"><p>Electronics</p></div>
+    <div class="cat-item" onclick="filterCategory('jewelery')"><img src="https://rukminim1.flixcart.com/flap/128/128/image/22fddf3c7da4c4f4.png"><p>Jewellery</p></div>
+    <div class="cat-item" onclick="filterCategory('men\'s clothing')"><img src="https://rukminim1.flixcart.com/flap/128/128/image/82b3ca5fb2301045.png"><p>Fashion</p></div>
+</div>
+
+<!-- HERO SLIDER -->
+<div class="hero-slider" id="slider">
+    <div class="slide active"><img src="https://rukminim1.flixcart.com/fk-p-flap/1600/270/image/8a89ee09cca4195d.jpg" alt="Hero1"></div>
+    <div class="slide"><img src="https://rukminim1.flixcart.com/fk-p-flap/1600/270/image/ed16061483efec4c.jpg" alt="Hero2"></div>
+    <div class="slide"><img src="https://rukminim1.flixcart.com/fk-p-flap/1600/270/image/1aa0218768a86782.jpg" alt="Hero3"></div>
+</div>
+
+<div class="main-wrapper">
+    <div class="section-white">
+        <div class="sec-title"><h2 id="gridTitle">Deals of the Day</h2></div>
+        <div class="product-list" id="mainProductGrid"></div>
+    </div>
+</div>
+
+<!-- CART SIDEBAR -->
+<div id="cartSidebar">
+    <div class="cart-header">
+        <h3>My Cart (<span id="cartSideCount">0</span>)</h3>
+        <i class="fa fa-times" onclick="toggleCart()" style="cursor:pointer"></i>
+    </div>
+    <div class="cart-items-container" id="cartItems"></div>
+    <div class="cart-footer">
+        <h3 style="margin-bottom: 10px;">Total: ₹<span id="totalPrice">0</span></h3>
+        <button class="checkout-btn" onclick="alert('Proceeding to Payment...')">PLACE ORDER</button>
+    </div>
+</div>
+
+<footer>
+    <div><h4>ABOUT</h4><p>Contact Us</p><p>About Us</p></div>
+    <div><h4>HELP</h4><p>Payments</p><p>Shipping</p></div>
+    <div><h4>POLICY</h4><p>Return Policy</p><p>Security</p></div>
+    <div><h4>SOCIAL</h4><p>Facebook</p><p>Twitter</p></div>
+</footer>
+
+<script>
+let allItems = [];
+let cart = JSON.parse(localStorage.getItem('fk_final_cart')) || [];
+
+// Start App
+async function startApp() {
+    try {
+        const res = await fetch('https://fakestoreapi.com/products');
+        allItems = await res.json();
+        renderGrid(allItems);
+        updateCartUI();
+        startSlider();
+
+        const user = localStorage.getItem('fk_user');
+        if(user) document.getElementById('loginBtn').innerText = `Hi, ${user}`;
+    } catch(e){ console.error("Failed to load products", e); }
+}
+
+// Render Products
+function renderGrid(list) {
+    const grid = document.getElementById('mainProductGrid');
+    grid.innerHTML = list.map(p => `
+        <div class="card">
+            <img src="${p.image}" alt="${p.title}" onerror="this.src='https://via.placeholder.com/150?text=No+Image'">
+            <div class="card-title">${p.title}</div>
+            <div>
+                <span class="rating-badge">${p.rating.rate} ★</span>
+                <span style="color:var(--text-gray); font-size:12px">(${p.rating.count})</span>
+            </div>
+            <div class="price-row">₹${(p.price*80).toLocaleString()}</div>
+            <button class="checkout-btn" style="padding:8px;font-size:12px;" onclick="addToCart(${p.id})">ADD TO CART</button>
+        </div>
+    `).join('');
+}
+
+// Add to Cart
+function addToCart(id) {
+    const p = allItems.find(x => x.id === id);
+    cart.push(p);
+    localStorage.setItem('fk_final_cart', JSON.stringify(cart));
+    updateCartUI();
+    document.getElementById('cartSidebar').classList.add('active');
+}
+
+// Update Cart UI
+function updateCartUI() {
+    document.getElementById('cartCount').innerText = cart.length;
+    document.getElementById('cartSideCount').innerText = cart.length;
+
+    const container = document.getElementById('cartItems');
+    let total = 0;
+    container.innerHTML = cart.map((item, idx) => {
+        total += (item.price * 80);
+        return `
+            <div class="cart-item">
+                <img src="${item.image}" onerror="this.src='https://via.placeholder.com/50?text=No+Image'">
+                <div style="flex:1">
+                    <p style="font-size:12px">${item.title.substring(0,25)}...</p>
+                    <b>₹${(item.price*80).toLocaleString()}</b>
+                </div>
+                <i class="fa fa-trash" style="color:red; cursor:pointer" onclick="removeFromCart(${idx})"></i>
+            </div>
+        `;
+    }).join('');
+    document.getElementById('totalPrice').innerText = total.toLocaleString();
+}
+
+// Remove Cart Item
+function removeFromCart(index) {
+    cart.splice(index, 1);
+    localStorage.setItem('fk_final_cart', JSON.stringify(cart));
+    updateCartUI();
+}
+
+// Toggle Cart Sidebar
+function toggleCart() { document.getElementById('cartSidebar').classList.toggle('active'); }
+
+// Filter Category
+function filterCategory(cat) {
+    document.getElementById('gridTitle').innerText = cat.charAt(0).toUpperCase() + cat.slice(1);
+    if(cat === 'all') renderGrid(allItems);
+    else renderGrid(allItems.filter(p => p.category === cat));
+}
+
+// Hero Slider
+function startSlider() {
+    let current = 0;
+    const slides = document.querySelectorAll('.slide');
+    setInterval(() => {
+        slides[current].classList.remove('active');
+        current = (current + 1) % slides.length;
+        slides[current].classList.add('active');
+    }, 4000);
+}
+
+// Search
+document.getElementById('mainSearch').addEventListener('input', e => {
+    const term = e.target.value.toLowerCase();
+    renderGrid(allItems.filter(p => p.title.toLowerCase().includes(term)));
+});
+
+// User Login
+function userLogin() {
+    const n = prompt("Enter Name:");
+    if(n){ localStorage.setItem('fk_user', n); location.reload(); }
+}
+
+startApp();
+</script>
+</body>
+</html>

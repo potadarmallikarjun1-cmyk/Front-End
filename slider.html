@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Slider in js</title>
+    <style>
+      .container {
+        width: 100%;
+        height: 95vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+      }
+      .card_flex {
+        gap: 1.5rem;
+        width: 60%;
+        display: flex;
+      }
+      .card_flex::-webkit-scrollbar {
+        display: none;
+      }
+      .card_image {
+        width: 350px;
+        height: 250px;
+        flex-shrink: 0;
+      }
+      .card_image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius:20px;
+      }
+      button
+      {
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="card_flex">
+        <div class="card_image">
+          <img src="./images/person_1.jpg" alt="" />
+        </div>
+        <div class="card_image">
+          <img src="./images/person_2.jpg" alt="" />
+        </div>
+        <div class="card_image">
+          <img src="./images/person_3.jpg" alt="" />
+        </div>
+        <div class="card_image">
+          <img src="./images/person_4.jpg" alt="" />
+        </div>
+        <div class="card_image">
+          <img src="./images/person_5.jpg" alt="" />
+        </div>
+        <div class="card_image">
+          <img src="./images/person_6.jpg" alt="" />
+        </div>
+      </div>
+      <div>
+        <button onclick="prev()">Prev</button>
+        <button onclick="next()">Next</button>
+      </div>
+    </div>
+    <div>
+       <iframe src="https://youtu.be/vdxnBKRD7kU?si=e5aujRqPHOyningn" frameborder="0">
+
+       </iframe>
+    </div>
+    <script>
+       const all_images=document.querySelectorAll(".card_image img");
+       console.log(all_images);
+    </script>
+  </body>
+</html>
